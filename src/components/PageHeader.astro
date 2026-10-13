@@ -1,0 +1,38 @@
+---
+// Interior page header: eyebrow, H1 and intro on the surface band.
+interface Props {
+	eyebrow: string;
+	title: string;
+	intro?: string;
+}
+
+const { eyebrow, title, intro } = Astro.props;
+---
+
+<section class="page-header" aria-labelledby="page-title">
+	<div class="container">
+		<slot name="before" />
+		<p class="eyebrow">{eyebrow}</p>
+		<h1 id="page-title">{title}</h1>
+		{intro && <p class="lead measure">{intro}</p>}
+		<slot />
+	</div>
+</section>
+
+<style>
+	.page-header {
+		background: var(--color-surface);
+		border-bottom: 1px solid var(--color-border);
+		padding-block: var(--space-2xl);
+	}
+
+	@media (min-width: 1024px) {
+		.page-header {
+			padding-block: var(--space-3xl) var(--space-2xl);
+		}
+	}
+
+	.lead {
+		margin-bottom: 0;
+	}
+</style>

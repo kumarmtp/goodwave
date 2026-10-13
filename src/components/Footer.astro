@@ -1,0 +1,137 @@
+---
+import { Image } from 'astro:assets';
+import lockup from '../assets/brand/good-wave-logo-lockup.png';
+import { company, fullAddress, navItems } from '../data/company';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer on-dark">
+	<div class="container footer-grid">
+		<div class="footer-brand">
+			<div class="logo-plate">
+				<Image src={lockup} alt={`${company.legalName} logo`} width={180} densities={[1, 2]} />
+			</div>
+			<p>{company.description}.</p>
+			<p class="footer-meta">UEN {company.uen}</p>
+		</div>
+
+		<nav aria-label="Footer">
+			<h2 class="footer-heading">Pages</h2>
+			<ul>
+				{navItems.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+			</ul>
+		</nav>
+
+		<div>
+			<h2 class="footer-heading">Contact</h2>
+			<ul class="contact-list">
+				<li>
+					<Icon name="phone" size={18} />
+					<a href={company.phone.href}>{company.phone.display}</a>
+				</li>
+				<li>
+					<Icon name="map-pin" size={18} />
+					<address>Registered office<br />{fullAddress}</address>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="container footer-bottom">
+		<p>&copy; {year} {company.legalName}</p>
+		<p>Project information reflects the company's 2026 project portfolio.</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--color-brand-strong);
+		color: var(--color-tint);
+		padding-top: var(--space-2xl);
+	}
+
+	.footer-grid {
+		display: grid;
+		gap: var(--space-xl);
+	}
+
+	@media (min-width: 768px) {
+		.footer-grid {
+			grid-template-columns: 1.4fr 1fr 1.4fr;
+		}
+	}
+
+	.logo-plate {
+		display: inline-block;
+		background: #ffffff;
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md);
+		margin-bottom: var(--space-md);
+	}
+
+	.footer-heading {
+		font-size: var(--text-sm);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-on-brand);
+		margin-bottom: var(--space-sm);
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	a {
+		color: var(--color-on-brand);
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+	}
+
+	a:hover {
+		color: var(--color-tint);
+	}
+
+	.contact-list li {
+		display: grid;
+		grid-template-columns: 18px 1fr;
+		gap: var(--space-sm);
+		align-items: start;
+		margin-bottom: var(--space-sm);
+	}
+
+	.contact-list :global(svg) {
+		margin-top: 13px;
+		color: var(--color-ochre);
+	}
+
+	.contact-list li:last-child :global(svg) {
+		margin-top: 4px;
+	}
+
+	address {
+		font-style: normal;
+	}
+
+	.footer-meta {
+		font-variant-numeric: tabular-nums;
+	}
+
+	.footer-bottom {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: var(--space-sm) var(--space-xl);
+		margin-top: var(--space-2xl);
+		padding-block: var(--space-lg);
+		border-top: 1px solid rgba(234, 240, 248, 0.2);
+		font-size: var(--text-sm);
+	}
+
+	.footer-bottom p {
+		margin: 0;
+	}
+</style>

@@ -1,0 +1,264 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/good-wave-mark.png';
+import { company, navItems } from '../data/company';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+const isCurrent = (href: string) => path === href;
+const isSection = (href: string) => href !== '/' && path.startsWith(href);
+---
+
+<header class="site-header">
+	<div class="container header-inner">
+		<a class="brand" href="/" aria-label={`${company.legalName}, home`}>
+			<Image src={mark} alt="" width={52} height={52} densities={[1, 2]} loading="eager" class="brand-mark" />
+			<span class="brand-text" aria-hidden="true">
+				<span class="brand-name">GOOD WAVE E&amp;C</span>
+				<span class="brand-sub">PTE. LTD.</span>
+			</span>
+		</a>
+
+		<button
+			class="nav-toggle"
+			type="button"
+			aria-expanded="false"
+			aria-controls="site-nav"
+			data-nav-toggle
+		>
+			<span class="nav-toggle-open"><Icon name="menu" size={24} /></span>
+			<span class="nav-toggle-close"><Icon name="close" size={24} /></span>
+			<span class="nav-toggle-label">Menu</span>
+		</button>
+
+		<nav id="site-nav" class="site-nav" aria-label="Main" data-nav>
+			<ul>
+				{
+					navItems.map((item) => (
+						<li>
+							<a
+								href={item.href}
+								aria-current={isCurrent(item.href) ? 'page' : isSection(item.href) ? 'true' : undefined}
+							>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<a class="btn btn--primary nav-call" href={company.phone.href}>
+				<Icon name="phone" size={18} />
+				<span>Call {company.phone.display}</span>
+			</a>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: var(--color-bg);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-md);
+		min-height: var(--header-height);
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-sm);
+		text-decoration: none;
+		color: var(--color-brand);
+		min-height: 44px;
+	}
+
+	.brand-mark {
+		width: 44px;
+		height: 44px;
+	}
+
+	.brand-text {
+		display: flex;
+		flex-direction: column;
+		font-family: var(--font-heading-stack);
+		line-height: 1.1;
+	}
+
+	.brand-name {
+		font-weight: 700;
+		font-size: 1.0625rem;
+		letter-spacing: 0.02em;
+	}
+
+	.brand-sub {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		color: var(--color-text-muted);
+	}
+
+	.nav-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-sm);
+		min-height: 44px;
+		min-width: 44px;
+		padding: 0 var(--space-md);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		background: var(--color-bg);
+		color: var(--color-brand);
+		font: 600 var(--text-base) / 1 var(--font-heading-stack);
+		cursor: pointer;
+	}
+
+	.nav-toggle-close,
+	.nav-toggle[aria-expanded='true'] .nav-toggle-open {
+		display: none;
+	}
+
+	.nav-toggle[aria-expanded='true'] .nav-toggle-close {
+		display: inline-flex;
+	}
+
+	.nav-toggle-open {
+		display: inline-flex;
+	}
+
+	.site-nav ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.site-nav a:not(.btn) {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		font-family: var(--font-heading-stack);
+		font-weight: 600;
+		color: var(--color-text);
+		text-decoration: none;
+		border-bottom: 2px solid transparent;
+		transition:
+			color var(--duration) ease-out,
+			border-color var(--duration) ease-out;
+	}
+
+	.site-nav a:not(.btn):hover {
+		color: var(--color-brand);
+	}
+
+	.site-nav a[aria-current] {
+		color: var(--color-brand);
+		border-bottom-color: var(--color-ochre);
+	}
+
+	/* Mobile: collapsible panel. Without JS (no data-js on <html>) the nav stays visible. */
+	@media (max-width: 1023px) {
+		.nav-toggle {
+			display: none;
+		}
+
+		:global(html[data-js]) .nav-toggle {
+			display: inline-flex;
+		}
+
+		.header-inner {
+			flex-wrap: wrap;
+		}
+
+		.site-nav {
+			width: 100%;
+			padding-bottom: var(--space-md);
+		}
+
+		:global(html[data-js]) .site-nav {
+			display: none;
+		}
+
+		:global(html[data-js]) .site-nav.is-open {
+			display: block;
+		}
+
+		.site-nav li {
+			border-bottom: 1px solid var(--color-border);
+		}
+
+		.site-nav a:not(.btn) {
+			width: 100%;
+			border-bottom: 0;
+			border-left: 3px solid transparent;
+			padding-left: var(--space-md);
+		}
+
+		.site-nav a[aria-current] {
+			border-left-color: var(--color-ochre);
+			background: var(--color-surface);
+		}
+
+		.nav-call {
+			margin-top: var(--space-md);
+			width: 100%;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.nav-toggle {
+			display: none;
+		}
+
+		.site-nav {
+			display: flex;
+			align-items: center;
+			gap: var(--space-xl);
+		}
+
+		.site-nav ul {
+			display: flex;
+			gap: var(--space-lg);
+		}
+	}
+
+	@media (max-width: 359px) {
+		.brand-sub {
+			display: none;
+		}
+	}
+</style>
+
+<script>
+	const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+	const nav = document.querySelector<HTMLElement>('[data-nav]');
+	const desktop = window.matchMedia('(min-width: 1024px)');
+
+	if (toggle && nav) {
+		const setOpen = (open: boolean) => {
+			toggle.setAttribute('aria-expanded', String(open));
+			nav.classList.toggle('is-open', open);
+		};
+
+		toggle.addEventListener('click', () => {
+			setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+				setOpen(false);
+				toggle.focus();
+			}
+		});
+
+		desktop.addEventListener('change', (event) => {
+			if (event.matches) setOpen(false);
+		});
+	}
+</script>

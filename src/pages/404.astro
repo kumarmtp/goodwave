@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+
+const links = [
+	{ href: '/', label: 'Home' },
+	{ href: '/projects/', label: 'Projects' },
+	{ href: '/capabilities/', label: 'Capabilities' },
+	{ href: '/contact/', label: 'Contact' },
+];
+---
+
+<BaseLayout title="Page not found" description="The requested page could not be found." index={false}>
+	<section class="section not-found" aria-labelledby="nf-title">
+		<div class="container">
+			<p class="eyebrow">Error 404</p>
+			<h1 id="nf-title">Page not found</h1>
+			<p class="lead measure">The page you are looking for does not exist or may have moved. Try one of these pages instead:</p>
+			<ul class="nf-links">
+				{
+					links.map((link) => (
+						<li>
+							<a href={link.href}>
+								{link.label} <Icon name="arrow-right" size={18} />
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.not-found {
+		min-height: 50vh;
+	}
+
+	.nf-links {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		gap: var(--space-md);
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+		margin-top: var(--space-xl);
+	}
+
+	.nf-links a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		min-height: 56px;
+		padding: var(--space-md) var(--space-lg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		font-family: var(--font-heading-stack);
+		font-weight: 600;
+		text-decoration: none;
+		transition:
+			border-color var(--duration) ease-out,
+			background-color var(--duration) ease-out;
+	}
+
+	.nf-links a:hover {
+		border-color: var(--color-brand);
+		background: var(--color-surface);
+	}
+</style>

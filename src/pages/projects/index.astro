@@ -1,0 +1,117 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import { formatSGD, portfolioSummary } from '../../data/company';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+	title="Projects"
+	description="Selected project records of GOOD WAVE E&C PTE. LTD.: Tengah PA C1 & CG, Contract N110 — North-South Corridor, and Bukit Merah C54 & 54A."
+>
+	<PageHeader
+		eyebrow="Selected projects"
+		title="Project portfolio"
+		intro="Three documented projects forming the current Good Wave E&C project portfolio, across public housing and infrastructure developments in Singapore."
+	/>
+
+	<section class="section" aria-label="Project list">
+		<div class="container project-grid">
+			{projects.map((project) => <ProjectCard project={project} headingLevel="h2" />)}
+		</div>
+	</section>
+
+	<section class="section section--surface" aria-labelledby="summary-title">
+		<div class="container">
+			<h2 id="summary-title">Selected project record</h2>
+			<div class="table-wrap" role="region" aria-labelledby="summary-title" tabindex="0">
+				<table>
+					<caption class="visually-hidden">Project, client or reference, estimated period and stated value</caption>
+					<thead>
+						<tr>
+							<th scope="col">Project</th>
+							<th scope="col">Client / reference</th>
+							<th scope="col">Estimated period</th>
+							<th scope="col" class="right">Stated value</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							projects.map((p) => (
+								<tr>
+									<th scope="row"><a href={`/projects/${p.id}/`}>{p.data.title}</a></th>
+									<td>{p.data.client}</td>
+									<td class="num">{p.data.period}</td>
+									<td class="num right">{formatSGD(p.data.estimatedValue)}</td>
+								</tr>
+							))
+						}
+					</tbody>
+					<tfoot>
+						<tr>
+							<th scope="row" colspan="3">Combined stated project value</th>
+							<td class="num right">{formatSGD(portfolioSummary.combinedStatedValue)}</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<p class="note">
+				This total is calculated from the three project values recorded in the source portfolio: S$560,000 +
+				S$140,000 + S$1,450,682. It is presented as a portfolio summary, not as a statement of company
+				turnover. Periods and values are as stated (estimated) in the portfolio and do not indicate
+				completion status.
+			</p>
+		</div>
+	</section>
+
+	<ContactCTA />
+</BaseLayout>
+
+<style>
+	.table-wrap {
+		overflow-x: auto;
+		background: var(--color-bg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+	}
+
+	table {
+		width: 100%;
+		min-width: 640px;
+		border-collapse: collapse;
+	}
+
+	th,
+	td {
+		text-align: left;
+		padding: var(--space-md);
+		border-bottom: 1px solid var(--color-border);
+		vertical-align: top;
+	}
+
+	thead th {
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
+		background: var(--color-surface);
+	}
+
+	tbody th {
+		font-weight: 600;
+	}
+
+	tfoot th,
+	tfoot td {
+		border-bottom: 0;
+		font-family: var(--font-heading-stack);
+		font-weight: 700;
+		color: var(--color-brand);
+	}
+
+	.right {
+		text-align: right;
+	}
+</style>

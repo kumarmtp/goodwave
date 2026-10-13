@@ -1,0 +1,195 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import { capabilities, type CapabilityId } from '../data/capabilities';
+import pavilion from '../assets/projects/tengah-pavilion-steel-frame.jpg';
+import railing from '../assets/projects/bukit-merah-railing-installation.jpg';
+import excavation from '../assets/projects/n110-steel-members-excavation.jpg';
+import linkway from '../assets/projects/tengah-linkway-steel-structure.jpg';
+
+const projects = await getCollection('projects');
+const projectTitle = Object.fromEntries(projects.map((p) => [p.id, p.data.title]));
+
+// Each photo comes from a project whose documented scope includes the capability.
+const photos: Record<CapabilityId, { src: ImageMetadata; alt: string; caption: string }> = {
+	'structural-steel': {
+		src: pavilion,
+		alt: 'Steel-framed pavilion structure on the Tengah PA C1 & CG site.',
+		caption: 'Pavilion steelwork, Tengah PA C1 & CG',
+	},
+	'railings-barriers': {
+		src: railing,
+		alt: 'Worker installing a galvanised steel railing at Bukit Merah C54 & 54A.',
+		caption: 'Railing installation, Bukit Merah C54 & 54A',
+	},
+	'temporary-works': {
+		src: excavation,
+		alt: 'Red-painted steel members laid across an excavation on the Contract N110 site.',
+		caption: 'Steel members within an excavation, Contract N110',
+	},
+	'site-coordination': {
+		src: linkway,
+		alt: 'Steel linkway framing along residential blocks with scaffolding and safety barriers at Tengah PA C1 & CG.',
+		caption: 'Linkway steelwork alongside building works, Tengah PA C1 & CG',
+	},
+};
+
+const demonstrates = [
+	'Experience across high-rise residential and major infrastructure project environments.',
+	'Ability to deliver defined specialist work packages within larger construction programmes.',
+	'Exposure to both structural steel and finishing/interface elements such as railings and barriers.',
+	'Project values ranging from S$140,000 to S$1.45 million in the selected records.',
+];
+---
+
+<BaseLayout
+	title="Capabilities"
+	description="Structural steel, railings and barriers, temporary works and site coordination: the work categories represented in GOOD WAVE E&C PTE. LTD.'s selected projects."
+>
+	<PageHeader
+		eyebrow="Capabilities"
+		title="Focused execution across steel and construction packages"
+		intro="A portfolio-led view of the work categories represented in the selected projects."
+	/>
+
+	<div class="cap-list">
+		{
+			capabilities.map((cap, i) => (
+				<section id={cap.id} class:list={['section', { 'section--surface': i % 2 === 1 }]} aria-labelledby={`${cap.id}-title`}>
+					<div class:list={['container', 'cap-row', { flip: i % 2 === 1 }]}>
+						<div class="cap-copy">
+							<p class="cap-num" aria-hidden="true">{cap.number}</p>
+							<h2 id={`${cap.id}-title`}>{cap.title}</h2>
+							<p class="lead">{cap.summary}</p>
+							<ul>
+								{cap.points.map((point) => <li>{point}</li>)}
+							</ul>
+							<h3 class="seen-in">Documented in</h3>
+							<ul class="seen-list">
+								{cap.projects.map((id) => (
+									<li><a href={`/projects/${id}/`}>{projectTitle[id]}</a></li>
+								))}
+							</ul>
+						</div>
+						<figure class="cap-media">
+							<Image
+								src={photos[cap.id].src}
+								alt={photos[cap.id].alt}
+								widths={[480, 720, photos[cap.id].src.width]}
+								sizes="(min-width: 1024px) 520px, 100vw"
+							/>
+							<figcaption>{photos[cap.id].caption}</figcaption>
+						</figure>
+					</div>
+				</section>
+			))
+		}
+	</div>
+
+	<section class="section demonstrates" aria-labelledby="demonstrates-title">
+		<div class="container">
+			<h2 id="demonstrates-title">What this portfolio demonstrates</h2>
+			<ul class="demo-list">
+				{demonstrates.map((item) => <li>{item}</li>)}
+			</ul>
+			<p class="note">
+				Capabilities are described only as documented in the company's selected project records.
+			</p>
+		</div>
+	</section>
+
+	<ContactCTA />
+</BaseLayout>
+
+<style>
+	.cap-row {
+		display: grid;
+		gap: var(--space-xl);
+		align-items: center;
+	}
+
+	@media (min-width: 1024px) {
+		.cap-row {
+			grid-template-columns: 1fr minmax(0, 520px);
+			gap: var(--space-3xl);
+		}
+
+		.cap-row.flip .cap-copy {
+			order: 2;
+		}
+	}
+
+	.cap-num {
+		font-family: var(--font-heading-stack);
+		font-weight: 700;
+		font-size: var(--text-xl);
+		color: var(--color-teal);
+		margin-bottom: var(--space-xs);
+	}
+
+	.cap-copy {
+		max-width: 60ch;
+	}
+
+	.seen-in {
+		font-size: var(--text-sm);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--color-text-muted);
+		margin-top: var(--space-lg);
+		margin-bottom: var(--space-xs);
+	}
+
+	.seen-list {
+		list-style: none;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 var(--space-lg);
+	}
+
+	.seen-list a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		font-weight: 600;
+	}
+
+	.cap-media {
+		margin: 0;
+	}
+
+	.cap-media img {
+		width: 100%;
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+		border-radius: var(--radius-md);
+	}
+
+	figcaption {
+		margin-top: var(--space-sm);
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
+	}
+
+	.demonstrates {
+		border-top: 1px solid var(--color-border);
+	}
+
+	.demo-list {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		gap: var(--space-md);
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+	}
+
+	.demo-list li {
+		padding: var(--space-lg);
+		border-top: 3px solid var(--color-brand);
+		background: var(--color-surface);
+	}
+</style>

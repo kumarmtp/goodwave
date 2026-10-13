@@ -1,0 +1,169 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { formatSGD } from '../data/company';
+import Icon from './Icon.astro';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	headingLevel?: 'h2' | 'h3';
+}
+
+const { project, headingLevel = 'h3' } = Astro.props;
+const { data } = project;
+const cover = data.images[0];
+const Heading = headingLevel;
+const href = `/projects/${project.id}/`;
+---
+
+<article class="project-card">
+	<div class="media">
+		<Image
+			src={cover.src}
+			alt=""
+			widths={[400, 640, Math.min(cover.src.width, 900)]}
+			sizes="(min-width: 1024px) 380px, (min-width: 640px) 42vw, 100vw"
+			class="photo"
+		/>
+	</div>
+	<div class="body">
+		<p class="sector">{data.sector}</p>
+		<Heading class="title">
+			<a href={href} class="stretched">{data.title}</a>
+		</Heading>
+		<p class="client">{data.client}</p>
+		<p class="summary">{data.summary}</p>
+		<dl class="meta">
+			<div>
+				<dt>Estimated period</dt>
+				<dd class="num">{data.period}</dd>
+			</div>
+			<div>
+				<dt>Estimated value</dt>
+				<dd class="num">{formatSGD(data.estimatedValue)}</dd>
+			</div>
+		</dl>
+		<span class="more" aria-hidden="true">View project <Icon name="arrow-right" size={18} /></span>
+	</div>
+</article>
+
+<style>
+	.project-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		background: var(--color-bg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		transition:
+			box-shadow var(--duration) ease-out,
+			border-color var(--duration) ease-out;
+	}
+
+	.project-card:hover,
+	.project-card:focus-within {
+		border-color: var(--color-brand);
+		box-shadow: var(--shadow-md);
+	}
+
+	.media {
+		aspect-ratio: 3 / 2;
+		background: var(--color-tint);
+	}
+
+	.photo {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 640px) and (max-width: 1023px) {
+		.project-card {
+			flex-direction: row;
+		}
+
+		.media {
+			flex: 0 0 42%;
+			aspect-ratio: auto;
+			min-height: 100%;
+		}
+	}
+
+	.body {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		padding: var(--space-lg);
+	}
+
+	.sector {
+		margin: 0 0 var(--space-xs);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		color: var(--color-teal);
+	}
+
+	.title {
+		margin-bottom: var(--space-xs);
+	}
+
+	.stretched {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.stretched::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+	}
+
+	.stretched:focus-visible {
+		outline: none;
+	}
+
+	.project-card:has(.stretched:focus-visible) {
+		outline: 3px solid var(--color-brand-mid);
+		outline-offset: 2px;
+	}
+
+	.client {
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
+	}
+
+	.summary {
+		flex: 1;
+	}
+
+	.meta {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-md);
+		margin: 0 0 var(--space-md);
+		padding-top: var(--space-md);
+		border-top: 1px solid var(--color-border);
+	}
+
+	.meta dt {
+		font-size: 0.8125rem;
+		color: var(--color-text-muted);
+	}
+
+	.meta dd {
+		margin: 0;
+		font-family: var(--font-heading-stack);
+		font-weight: 600;
+		color: var(--color-brand);
+	}
+
+	.more {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-xs);
+		font-weight: 600;
+		color: var(--color-brand);
+	}
+</style>
