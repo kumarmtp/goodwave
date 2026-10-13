@@ -1,4 +1,5 @@
 ---
+import { url } from '../../utils/url';
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
@@ -30,7 +31,7 @@ const related = capabilities.filter((cap) => data.capabilities.includes(cap.id))
 
 <BaseLayout title={data.title} description={`${data.title} (${data.client}): ${data.summary}`}>
 	<PageHeader eyebrow={data.sector} title={data.title}>
-		<a slot="before" class="back text-link" href="/projects/">
+		<a slot="before" class="back text-link" href={url('/projects/')}>
 			<Icon name="arrow-left" size={18} /> All projects
 		</a>
 		<p class="client">
@@ -107,7 +108,7 @@ const related = capabilities.filter((cap) => data.capabilities.includes(cap.id))
 				{
 					related.map((cap) => (
 						<li>
-							<a href={`/capabilities/#${cap.id}`}>
+							<a href={url(`/capabilities/#${cap.id}`)}>
 								<span class="cap-title">{cap.title}</span>
 								<span class="cap-summary">{cap.summary}</span>
 							</a>
@@ -116,8 +117,8 @@ const related = capabilities.filter((cap) => data.capabilities.includes(cap.id))
 				}
 			</ul>
 			<nav class="pager" aria-label="Project navigation">
-				<a class="text-link" href="/projects/"><Icon name="arrow-left" size={18} /> Back to projects</a>
-				<a class="text-link" href={`/projects/${next.id}/`}>
+				<a class="text-link" href={url('/projects/')}><Icon name="arrow-left" size={18} /> Back to projects</a>
+				<a class="text-link" href={url(`/projects/${next.id}/`)}>
 					Next project: {next.data.shortTitle} <Icon name="arrow-right" size={18} />
 				</a>
 			</nav>

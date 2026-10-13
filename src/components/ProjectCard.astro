@@ -1,4 +1,5 @@
 ---
+import { url } from '../utils/url';
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import { formatSGD } from '../data/company';
@@ -13,7 +14,7 @@ const { project, headingLevel = 'h3' } = Astro.props;
 const { data } = project;
 const cover = data.images[0];
 const Heading = headingLevel;
-const href = `/projects/${project.id}/`;
+const href = url(`/projects/${project.id}/`);
 ---
 
 <article class="project-card">

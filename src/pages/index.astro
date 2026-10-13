@@ -1,4 +1,5 @@
 ---
+import { url } from '../utils/url';
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -27,11 +28,11 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 					infrastructure developments.
 				</p>
 				<div class="btn-row">
-					<a class="btn btn--primary" href="/projects/">
+					<a class="btn btn--primary" href={url('/projects/')}>
 						Explore Our Projects
 						<Icon name="arrow-right" size={18} />
 					</a>
-					<a class="btn btn--secondary" href="/contact/">Contact Us</a>
+					<a class="btn btn--secondary" href={url('/contact/')}>Contact Us</a>
 				</div>
 			</div>
 			<figure class="hero-media">
@@ -83,7 +84,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 					<p class="eyebrow">Capabilities</p>
 					<h2 id="capabilities-title">Focused execution across steel and construction packages</h2>
 				</div>
-				<a class="text-link" href="/capabilities/">All capabilities <Icon name="arrow-right" size={18} /></a>
+				<a class="text-link" href={url('/capabilities/')}>All capabilities <Icon name="arrow-right" size={18} /></a>
 			</div>
 			<ol class="cap-grid">
 				{
@@ -106,7 +107,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 					<p class="eyebrow">Selected projects</p>
 					<h2 id="projects-title">Documented project experience</h2>
 				</div>
-				<a class="text-link" href="/projects/">All projects <Icon name="arrow-right" size={18} /></a>
+				<a class="text-link" href={url('/projects/')}>All projects <Icon name="arrow-right" size={18} /></a>
 			</div>
 			<div class="project-grid">
 				{projects.map((project) => <ProjectCard project={project} />)}
@@ -125,7 +126,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 					delivering defined work packages within major residential, public-housing and infrastructure
 					developments.
 				</p>
-				<a class="text-link" href="/about/">Company profile <Icon name="arrow-right" size={18} /></a>
+				<a class="text-link" href={url('/about/')}>Company profile <Icon name="arrow-right" size={18} /></a>
 			</div>
 			<dl class="facts">
 				<div><dt>UEN</dt><dd>{company.uen}</dd></div>

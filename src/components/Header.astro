@@ -1,17 +1,18 @@
 ---
+import { url } from '../utils/url';
 import { Image } from 'astro:assets';
 import mark from '../assets/brand/good-wave-mark.png';
 import { company, navItems } from '../data/company';
 import Icon from './Icon.astro';
 
 const path = Astro.url.pathname.replace(/\/?$/, '/');
-const isCurrent = (href: string) => path === href;
-const isSection = (href: string) => href !== '/' && path.startsWith(href);
+const isCurrent = (href: string) => path === url(href);
+const isSection = (href: string) => href !== '/' && path.startsWith(url(href));
 ---
 
 <header class="site-header">
 	<div class="container header-inner">
-		<a class="brand" href="/" aria-label={`${company.legalName}, home`}>
+		<a class="brand" href={url('/')} aria-label={`${company.legalName}, home`}>
 			<Image src={mark} alt="" width={52} height={52} densities={[1, 2]} loading="eager" class="brand-mark" />
 			<span class="brand-text" aria-hidden="true">
 				<span class="brand-name">GOOD WAVE E&amp;C</span>
@@ -37,7 +38,7 @@ const isSection = (href: string) => href !== '/' && path.startsWith(href);
 					navItems.map((item) => (
 						<li>
 							<a
-								href={item.href}
+								href={url(item.href)}
 								aria-current={isCurrent(item.href) ? 'page' : isSection(item.href) ? 'true' : undefined}
 							>
 								{item.label}

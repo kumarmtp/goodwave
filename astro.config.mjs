@@ -2,9 +2,12 @@
 import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
-// `site` is intentionally unset until the production domain is confirmed
-// (no canonical URLs or absolute Open Graph images are emitted without it).
+// Hosted on GitHub Pages as a project site, so every internal link is prefixed
+// with `base` via src/utils/url.ts. For a custom domain, set `site` to it and
+// remove `base`.
 export default defineConfig({
+	site: 'https://kumarmtp.github.io',
+	base: '/goodwave',
 	trailingSlash: 'ignore',
 	fonts: [
 		{

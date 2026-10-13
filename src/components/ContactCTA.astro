@@ -1,4 +1,5 @@
 ---
+import { url } from '../utils/url';
 import { company } from '../data/company';
 import Icon from './Icon.astro';
 
@@ -24,7 +25,7 @@ const {
 				<Icon name="phone" size={18} />
 				Call {company.phone.display}
 			</a>
-			<a class="btn btn--outline-light" href="/contact/">Contact details</a>
+			<a class="btn btn--outline-light" href={url('/contact/')}>Contact details</a>
 		</div>
 	</div>
 </section>
