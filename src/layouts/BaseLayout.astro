@@ -56,8 +56,8 @@ const organization = {
 		{canonical && <meta property="og:url" content={canonical} />}
 		<meta name="twitter:card" content="summary" />
 		<meta name="generator" content={Astro.generator} />
-		<Font cssVariable="--font-heading" preload={[{ weight: '700' }]} />
-		<Font cssVariable="--font-body" preload={[{ weight: '400' }]} />
+		<Font cssVariable="--font-heading" preload />
+		<Font cssVariable="--font-body" preload />
 		<script is:inline>document.documentElement.setAttribute('data-js', '');</script>
 		<script type="application/ld+json" set:html={JSON.stringify(organization)} />
 		<slot name="head" />

@@ -6,6 +6,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 // (no canonical URLs or absolute Open Graph images are emitted without it).
 export default defineConfig({
 	trailingSlash: 'ignore',
+	prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 	fonts: [
 		{
 			provider: fontProviders.google(),
